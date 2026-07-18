@@ -53,11 +53,11 @@ func (c *Comparator) compareEndpoints(old, newSpec *openapi3.T) []model.DiffChan
 			for _, method := range []string{"get", "put", "post", "delete", "options", "head", "patch", "trace"} {
 				if getOperation(oldPathItem, method) != nil {
 					changes = append(changes, model.DiffChange{
-						Severity:  model.Critical,
-						Type:      model.Removed,
-						Path:      path,
-						Operation: strings.ToUpper(method),
-						Detail:    fmt.Sprintf("%s endpoint removed", strings.ToUpper(method)),
+						Severity:   model.Critical,
+						Type:       model.Removed,
+						Path:       path,
+						Operation:  strings.ToUpper(method),
+						Detail:     fmt.Sprintf("%s endpoint removed", strings.ToUpper(method)),
 						Suggestion: "Check if this endpoint was intentionally removed or should be added back",
 					})
 				}
@@ -77,11 +77,11 @@ func (c *Comparator) compareEndpoints(old, newSpec *openapi3.T) []model.DiffChan
 
 			if newOp == nil {
 				changes = append(changes, model.DiffChange{
-					Severity:  model.Critical,
-					Type:      model.Removed,
-					Path:      path,
-					Operation: methodUpper,
-					Detail:    fmt.Sprintf("%s operation removed from %s", methodUpper, path),
+					Severity:   model.Critical,
+					Type:       model.Removed,
+					Path:       path,
+					Operation:  methodUpper,
+					Detail:     fmt.Sprintf("%s operation removed from %s", methodUpper, path),
 					Suggestion: "Check if this operation was intentionally removed",
 				})
 				continue
@@ -90,20 +90,20 @@ func (c *Comparator) compareEndpoints(old, newSpec *openapi3.T) []model.DiffChan
 			// Check for deprecation changes on the operation
 			if !oldOp.Deprecated && newOp.Deprecated {
 				changes = append(changes, model.DiffChange{
-					Severity: model.Deprecated,
-					Type:     model.Modified,
-					Path:     path,
+					Severity:  model.Deprecated,
+					Type:      model.Modified,
+					Path:      path,
 					Operation: methodUpper,
-					Detail:   fmt.Sprintf("%s %s marked as deprecated", methodUpper, path),
+					Detail:    fmt.Sprintf("%s %s marked as deprecated", methodUpper, path),
 				})
 			}
 			if oldOp.Deprecated && !newOp.Deprecated {
 				changes = append(changes, model.DiffChange{
-					Severity: model.Deprecated,
-					Type:     model.Modified,
-					Path:     path,
+					Severity:  model.Deprecated,
+					Type:      model.Modified,
+					Path:      path,
 					Operation: methodUpper,
-					Detail:   fmt.Sprintf("deprecated flag removed from %s %s", methodUpper, path),
+					Detail:    fmt.Sprintf("deprecated flag removed from %s %s", methodUpper, path),
 				})
 			}
 
@@ -174,11 +174,11 @@ func (c *Comparator) compareParameters(path, method string, oldOp, newOp *openap
 		newP, exists := newParams[key]
 		if !exists {
 			changes = append(changes, model.DiffChange{
-				Severity:  model.Critical,
-				Type:      model.Removed,
-				Path:      path,
-				Operation: method,
-				Detail:    fmt.Sprintf("parameter %s.%s removed", oldP.In, oldP.Name),
+				Severity:   model.Critical,
+				Type:       model.Removed,
+				Path:       path,
+				Operation:  method,
+				Detail:     fmt.Sprintf("parameter %s.%s removed", oldP.In, oldP.Name),
 				Suggestion: "Check if this parameter is still needed",
 			})
 			continue
@@ -187,11 +187,11 @@ func (c *Comparator) compareParameters(path, method string, oldOp, newOp *openap
 		// Check if required changed
 		if !oldP.Required && newP.Required {
 			changes = append(changes, model.DiffChange{
-				Severity:  model.Critical,
-				Type:      model.Modified,
-				Path:      path,
-				Operation: method,
-				Detail:    fmt.Sprintf("parameter %s.%s changed from optional to required", oldP.In, oldP.Name),
+				Severity:   model.Critical,
+				Type:       model.Modified,
+				Path:       path,
+				Operation:  method,
+				Detail:     fmt.Sprintf("parameter %s.%s changed from optional to required", oldP.In, oldP.Name),
 				Suggestion: "Clients must now provide this parameter",
 			})
 		}
@@ -201,11 +201,11 @@ func (c *Comparator) compareParameters(path, method string, oldOp, newOp *openap
 		newType := getSchemaTypeName(newP.Schema)
 		if oldType != newType {
 			changes = append(changes, model.DiffChange{
-				Severity:  model.Critical,
-				Type:      model.Modified,
-				Path:      path,
-				Operation: method,
-				Detail:    fmt.Sprintf("parameter %s.%s type changed from %s to %s", oldP.In, oldP.Name, oldType, newType),
+				Severity:   model.Critical,
+				Type:       model.Modified,
+				Path:       path,
+				Operation:  method,
+				Detail:     fmt.Sprintf("parameter %s.%s type changed from %s to %s", oldP.In, oldP.Name, oldType, newType),
 				Suggestion: "Update client code to handle the new type",
 			})
 		}
@@ -213,11 +213,11 @@ func (c *Comparator) compareParameters(path, method string, oldOp, newOp *openap
 		// Check deprecation on parameter
 		if !oldP.Deprecated && newP.Deprecated {
 			changes = append(changes, model.DiffChange{
-				Severity: model.Deprecated,
-				Type:     model.Modified,
-				Path:     path,
+				Severity:  model.Deprecated,
+				Type:      model.Modified,
+				Path:      path,
 				Operation: method,
-				Detail:   fmt.Sprintf("parameter %s.%s deprecated", oldP.In, oldP.Name),
+				Detail:    fmt.Sprintf("parameter %s.%s deprecated", oldP.In, oldP.Name),
 			})
 		}
 	}
@@ -250,11 +250,11 @@ func (c *Comparator) compareRequestBody(path, method string, oldOp, newOp *opena
 
 	if oldBody != nil && newBody == nil {
 		changes = append(changes, model.DiffChange{
-			Severity:  model.Critical,
-			Type:      model.Removed,
-			Path:      path,
-			Operation: method,
-			Detail:    "request body removed",
+			Severity:   model.Critical,
+			Type:       model.Removed,
+			Path:       path,
+			Operation:  method,
+			Detail:     "request body removed",
 			Suggestion: "Check if the endpoint now accepts no body",
 		})
 		return changes
@@ -390,28 +390,28 @@ func compareSchemas(path, op string, old, new *openapi3.Schema) []model.DiffChan
 		if !oldHas && newHas {
 			if newRequired {
 				changes = append(changes, model.DiffChange{
-					Severity: model.Critical,
-					Type:     model.Added,
-					Path:     fmt.Sprintf("%s.%s", path, field),
+					Severity:  model.Critical,
+					Type:      model.Added,
+					Path:      fmt.Sprintf("%s.%s", path, field),
 					Operation: op,
-					Detail:   fmt.Sprintf("required field '%s' added to request/response schema", field),
+					Detail:    fmt.Sprintf("required field '%s' added to request/response schema", field),
 				})
 			} else {
 				changes = append(changes, model.DiffChange{
-					Severity: model.Info,
-					Type:     model.Added,
-					Path:     fmt.Sprintf("%s.%s", path, field),
+					Severity:  model.Info,
+					Type:      model.Added,
+					Path:      fmt.Sprintf("%s.%s", path, field),
 					Operation: op,
-					Detail:   fmt.Sprintf("field '%s' added to schema", field),
+					Detail:    fmt.Sprintf("field '%s' added to schema", field),
 				})
 			}
 		} else if oldHas && !newHas {
 			changes = append(changes, model.DiffChange{
-				Severity: model.Warning,
-				Type:     model.Removed,
-				Path:     fmt.Sprintf("%s.%s", path, field),
-				Operation: op,
-				Detail:   fmt.Sprintf("field '%s' removed from schema", field),
+				Severity:   model.Warning,
+				Type:       model.Removed,
+				Path:       fmt.Sprintf("%s.%s", path, field),
+				Operation:  op,
+				Detail:     fmt.Sprintf("field '%s' removed from schema", field),
 				Suggestion: "Update client code to remove references to this field",
 			})
 		} else if oldHas && newHas {
@@ -420,11 +420,11 @@ func compareSchemas(path, op string, old, new *openapi3.Schema) []model.DiffChan
 			newType := getSchemaTypeName(new.Properties[field])
 			if oldType != newType {
 				changes = append(changes, model.DiffChange{
-					Severity: model.Critical,
-					Type:     model.Modified,
-					Path:     fmt.Sprintf("%s.%s", path, field),
+					Severity:  model.Critical,
+					Type:      model.Modified,
+					Path:      fmt.Sprintf("%s.%s", path, field),
 					Operation: op,
-					Detail:   fmt.Sprintf("field '%s' type changed from %s to %s", field, oldType, newType),
+					Detail:    fmt.Sprintf("field '%s' type changed from %s to %s", field, oldType, newType),
 				})
 			}
 		}

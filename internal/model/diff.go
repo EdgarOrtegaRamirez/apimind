@@ -9,9 +9,9 @@ import (
 type Severity string
 
 const (
-	Critical  Severity = "CRITICAL"
-	Warning   Severity = "WARNING"
-	Info      Severity = "INFO"
+	Critical   Severity = "CRITICAL"
+	Warning    Severity = "WARNING"
+	Info       Severity = "INFO"
 	Deprecated Severity = "DEPRECATED"
 )
 
@@ -19,34 +19,34 @@ const (
 type ChangeType string
 
 const (
-	Added     ChangeType = "ADDED"
-	Removed   ChangeType = "REMOVED"
-	Modified  ChangeType = "MODIFIED"
-	Moved     ChangeType = "MOVED"
+	Added    ChangeType = "ADDED"
+	Removed  ChangeType = "REMOVED"
+	Modified ChangeType = "MODIFIED"
+	Moved    ChangeType = "MOVED"
 )
 
 // DiffChange represents a single detected change between two API versions.
 type DiffChange struct {
-	Severity  Severity   `json:"severity"`
-	Type      ChangeType `json:"type"`
-	Path      string     `json:"path"`
-	Operation string     `json:"operation,omitempty"`
-	Detail    string     `json:"detail"`
-	Suggestion string   `json:"suggestion,omitempty"`
+	Severity   Severity   `json:"severity"`
+	Type       ChangeType `json:"type"`
+	Path       string     `json:"path"`
+	Operation  string     `json:"operation,omitempty"`
+	Detail     string     `json:"detail"`
+	Suggestion string     `json:"suggestion,omitempty"`
 }
 
 // APIDiff is the result of comparing two API specifications.
 type APIDiff struct {
-	OldVersion string      `json:"old_version"`
-	NewVersion string      `json:"new_version"`
-	OldTitle   string      `json:"old_title"`
-	NewTitle   string      `json:"new_title"`
+	OldVersion string       `json:"old_version"`
+	NewVersion string       `json:"new_version"`
+	OldTitle   string       `json:"old_title"`
+	NewTitle   string       `json:"new_title"`
 	Changes    []DiffChange `json:"changes"`
-	Total      int         `json:"total"`
-	Breaking   int         `json:"breaking"`
-	Warning    int         `json:"warning"`
-	Added      int         `json:"added"`
-	Deprecated int         `json:"deprecated"`
+	Total      int          `json:"total"`
+	Breaking   int          `json:"breaking"`
+	Warning    int          `json:"warning"`
+	Added      int          `json:"added"`
+	Deprecated int          `json:"deprecated"`
 }
 
 // EndpointChange represents a change at the endpoint level.
@@ -67,10 +67,10 @@ type SchemaDiff struct {
 
 // ReportSummary holds a summary of the diff analysis.
 type ReportSummary struct {
-	TotalChanges int  `json:"total_changes"`
-	HasBreaking  bool `json:"has_breaking"`
-	BreakingCount int `json:"breaking_count"`
-	WARNINGCount int  `json:"warning_count"`
-	AddedCount   int  `json:"added_count"`
-	DeprecatedCount int `json:"deprecated_count"`
+	TotalChanges    int  `json:"total_changes"`
+	HasBreaking     bool `json:"has_breaking"`
+	BreakingCount   int  `json:"breaking_count"`
+	WARNINGCount    int  `json:"warning_count"`
+	AddedCount      int  `json:"added_count"`
+	DeprecatedCount int  `json:"deprecated_count"`
 }

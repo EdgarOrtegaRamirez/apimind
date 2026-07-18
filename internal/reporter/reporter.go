@@ -14,9 +14,9 @@ import (
 type Format string
 
 const (
-	FormatText     Format = "text"
-	FormatJSON     Format = "json"
-	FormatMarkdown Format = "markdown"
+	FormatText      Format = "text"
+	FormatJSON      Format = "json"
+	FormatMarkdown  Format = "markdown"
 	FormatMigration Format = "migration"
 )
 
