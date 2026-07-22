@@ -3,7 +3,7 @@ module github.com/EdgarOrtegaRamirez/apimind
 go 1.25.0
 
 require (
-	github.com/getkin/kin-openapi v0.142.0
+	github.com/getkin/kin-openapi v0.143.0
 	github.com/spf13/cobra v1.10.2
 )
 
